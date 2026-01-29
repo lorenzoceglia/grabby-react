@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 type DraggableCardProps = {
 	title: string;
@@ -18,18 +18,18 @@ const DraggableCard = ({
 		<div
 			ref={ref}
 			id={id}
-			className="bg-white absolute rounded-xl shadow-2xl overflow-hidden border border-gray-300/50 backdrop-blur-sm"
+			className="bg-white absolute rounded-xl shadow-2xl border border-gray-300/50 backdrop-blur-sm"
 		>
 			<div
 				id={`${id}-header`}
-				className="bg-linear-to-b from-gray-100 to-gray-200 px-4 py-3 cursor-move flex items-center gap-2 border-b border-gray-300/50"
+				className="bg-linear-to-b from-gray-100 to-gray-200 px-4 py-4 cursor-move flex items-center gap-2 border-b border-gray-300/50 select-none"
 			>
 				<div className="flex gap-2 pointer-events-none">
 					<div className="w-3 h-3 rounded-full bg-red-500" />
 					<div className="w-3 h-3 rounded-full bg-yellow-500" />
 					<div className="w-3 h-3 rounded-full bg-green-500" />
 				</div>
-				<span className="text-sm font-medium text-gray-700 ml-2 pointer-events-none">
+				<span className="text-sm font-medium text-gray-700 ml-2 pointer-events-none flex-1">
 					{title}
 				</span>
 			</div>

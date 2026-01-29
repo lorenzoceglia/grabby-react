@@ -26,25 +26,29 @@ export const DragProvider = ({ children }: { children: React.ReactNode }) => {
 
 			if (!element) return;
 
-			const elementRect = element.getBoundingClientRect();
-
 			if (parentRef.current) {
 				const parent = parentRef.current;
 				const parentRect = parent.getBoundingClientRect();
+				const elementRect = element.getBoundingClientRect();
 
 				let x = e.clientX - parentRect.left - offset.offsetX;
 				let y = e.clientY - parentRect.top - offset.offsetY;
 
-				x = Math.max(0, Math.min(x, parentRect.width - elementRect.width));
-				y = Math.max(0, Math.min(y, parentRect.height - elementRect.height));
+				const maxX = parentRect.width - elementRect.width;
+				const maxY = parentRect.height - elementRect.height;
 
-				element.style.left = `${x}px`;
-				element.style.top = `${y}px`;
+				x = Math.max(0, Math.min(x, maxX));
+				y = Math.max(0, Math.min(y, maxY));
+
+				element.style.transform = `translate(${x}px, ${y}px)`;
+				element.style.left = "0";
+				element.style.top = "0";
 				return;
 			}
 
-			element.style.left = `${e.clientX - offset.offsetX}px`;
-			element.style.top = `${e.clientY - offset.offsetY}px`;
+			element.style.transform = `translate(${e.clientX - offset.offsetX}px, ${e.clientY - offset.offsetY}px)`;
+			element.style.left = "0";
+			element.style.top = "0";
 		},
 		[trackedElement, offset],
 	);
