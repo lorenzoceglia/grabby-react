@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@keyframes macos-dock-lift {
+	0% {
+		transform: translateY(0);
+	}
+
+	40% {
+		transform: translateY(-10px);
+	}
+
+	55% {
+		transform: translateY(-10px);
+	}
+
+	90% {
+		transform: translateY(0);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
