@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DragContext } from "./DragContext";
+import type { DefaultElementPosition } from "./types.ts";
 
 export const DragProvider = ({ children }: { children: React.ReactNode }) => {
 	const [trackedElement, setTrackedElement] = useState<string | undefined>();
 	const [offset, setOffset] = useState({ offsetX: 0, offsetY: 0 });
+
+	const initializedDragsRef = useRef(new Set());
 
 	const dragsRef = useRef<
 		Record<
@@ -95,7 +98,10 @@ export const DragProvider = ({ children }: { children: React.ReactNode }) => {
 		};
 	}, [trackedElement, parentRef]);
 
-	const registerDrag = (id: string) => {
+	const registerDrag = (
+		id: string,
+		defaultPosition?: DefaultElementPosition,
+	) => {
 		if (!dragsRef.current[id]) {
 			dragsRef.current[id] = {
 				ref: null,
@@ -107,6 +113,12 @@ export const DragProvider = ({ children }: { children: React.ReactNode }) => {
 
 		return {
 			ref: (el: HTMLElement | null) => {
+				if (el && defaultPosition && !initializedDragsRef.current.has(id)) {
+					el.style.left = defaultPosition.left;
+					el.style.top = defaultPosition.top;
+					initializedDragsRef.current.add(id);
+				}
+
 				field.ref = el;
 
 				let currentParent = el?.parentElement;
