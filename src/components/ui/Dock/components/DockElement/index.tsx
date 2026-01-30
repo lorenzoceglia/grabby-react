@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { openWindow } from "@/store/features/windows/windowsSlice.ts";
 
 type DockElementProps = {
 	isOpened?: boolean;
@@ -9,6 +11,8 @@ type DockElementProps = {
 const DockElement = ({ isSeparator = false, icon }: DockElementProps) => {
 	const [isBouncing, setIsBouncing] = useState(false);
 	const [isOpened, setIsOpened] = useState(false);
+
+	const dispatch = useDispatch();
 
 	const handleClick = () => {
 		if (isBouncing) return;
@@ -29,7 +33,24 @@ const DockElement = ({ isSeparator = false, icon }: DockElementProps) => {
 						: ""
 				}
 				onAnimationStart={() => setIsOpened(true)}
-				onAnimationEnd={() => setIsBouncing(false)}
+				onAnimationEnd={() => {
+					setIsBouncing(false);
+					dispatch(
+						openWindow({
+							window: {
+								title: "Demo Component",
+								component: "demo",
+								x: 100,
+								y: 50,
+								width: 600,
+								height: 500,
+								zIndex: 10,
+								minimized: false,
+								maximized: false,
+							},
+						}),
+					);
+				}}
 			/>
 
 			{isOpened && (
